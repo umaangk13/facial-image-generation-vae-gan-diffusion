@@ -5,7 +5,6 @@ venv/
 
 # Data & large files
 images/
-final_train.csv
 *.pth
 
 # Assignment PDF
