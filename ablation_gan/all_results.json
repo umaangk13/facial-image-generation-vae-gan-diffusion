@@ -1,0 +1,80 @@
+[
+  {
+    "name": "Baseline",
+    "changed_param": "None",
+    "changed_value": "-",
+    "best_g_loss": 1.9591868971563449,
+    "final_d_loss": 0.9965981932202722,
+    "final_g_loss": 2.0120853787394846,
+    "g_params": 6583939,
+    "d_params": 2941505,
+    "ssim_glasses": 0.34756575524806976,
+    "ssim_no_glasses": 0.3551774322986603,
+    "ssim_average": 0.351371593773365
+  },
+  {
+    "name": "Exp1: D_Steps 3",
+    "changed_param": "D_STEPS",
+    "changed_value": "3",
+    "best_g_loss": 4.1110072637059885,
+    "final_d_loss": 0.52593067250434,
+    "final_g_loss": 4.313963217340457,
+    "g_params": 6583939,
+    "d_params": 2941505,
+    "ssim_glasses": 0.34254753589630127,
+    "ssim_no_glasses": 0.32982058823108673,
+    "ssim_average": 0.336184062063694
+  },
+  {
+    "name": "Exp2: No Label Smooth",
+    "changed_param": "LABEL_SMOOTHING",
+    "changed_value": "0.0",
+    "best_g_loss": 1.9735730354952965,
+    "final_d_loss": 0.9239702942265067,
+    "final_g_loss": 2.0921963005308895,
+    "g_params": 6583939,
+    "d_params": 2941505,
+    "ssim_glasses": 0.32164911925792694,
+    "ssim_no_glasses": 0.3247512876987457,
+    "ssim_average": 0.32320020347833633
+  },
+  {
+    "name": "Exp3: Dropout 0.5",
+    "changed_param": "DROPOUT",
+    "changed_value": "0.5",
+    "best_g_loss": 1.8115129254426166,
+    "final_d_loss": 1.0244646201467817,
+    "final_g_loss": 1.844862969437982,
+    "g_params": 6583939,
+    "d_params": 2941505,
+    "ssim_glasses": 0.33360886573791504,
+    "ssim_no_glasses": 0.3543577790260315,
+    "ssim_average": 0.34398332238197327
+  },
+  {
+    "name": "Exp4: LR 1e-4",
+    "changed_param": "LR_G / LR_D",
+    "changed_value": "1e-4",
+    "best_g_loss": 1.986466074445445,
+    "final_d_loss": 0.927832808464196,
+    "final_g_loss": 2.036197772451267,
+    "g_params": 6583939,
+    "d_params": 2941505,
+    "ssim_glasses": 0.3452702611684799,
+    "ssim_no_glasses": 0.3467738926410675,
+    "ssim_average": 0.3460220769047737
+  },
+  {
+    "name": "Exp5: LeakyReLU Gen",
+    "changed_param": "G_ACTIVATION",
+    "changed_value": "leakyrelu",
+    "best_g_loss": 2.028430362415921,
+    "final_d_loss": 0.8254900813862017,
+    "final_g_loss": 2.638048484067249,
+    "g_params": 6583939,
+    "d_params": 2941505,
+    "ssim_glasses": 0.30074337124824524,
+    "ssim_no_glasses": 0.3269897699356079,
+    "ssim_average": 0.3138665705919266
+  }
+]

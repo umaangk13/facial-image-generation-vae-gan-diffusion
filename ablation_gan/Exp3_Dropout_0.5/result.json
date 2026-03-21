@@ -1,0 +1,13 @@
+{
+  "name": "Exp3: Dropout 0.5",
+  "changed_param": "DROPOUT",
+  "changed_value": "0.5",
+  "best_g_loss": 1.8115129254426166,
+  "final_d_loss": 1.0244646201467817,
+  "final_g_loss": 1.844862969437982,
+  "g_params": 6583939,
+  "d_params": 2941505,
+  "ssim_glasses": 0.33360886573791504,
+  "ssim_no_glasses": 0.3543577790260315,
+  "ssim_average": 0.34398332238197327
+}

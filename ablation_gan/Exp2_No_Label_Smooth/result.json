@@ -1,0 +1,13 @@
+{
+  "name": "Exp2: No Label Smooth",
+  "changed_param": "LABEL_SMOOTHING",
+  "changed_value": "0.0",
+  "best_g_loss": 1.9735730354952965,
+  "final_d_loss": 0.9239702942265067,
+  "final_g_loss": 2.0921963005308895,
+  "g_params": 6583939,
+  "d_params": 2941505,
+  "ssim_glasses": 0.32164911925792694,
+  "ssim_no_glasses": 0.3247512876987457,
+  "ssim_average": 0.32320020347833633
+}

@@ -1,0 +1,13 @@
+{
+  "name": "Baseline",
+  "changed_param": "None",
+  "changed_value": "-",
+  "best_g_loss": 1.9591868971563449,
+  "final_d_loss": 0.9965981932202722,
+  "final_g_loss": 2.0120853787394846,
+  "g_params": 6583939,
+  "d_params": 2941505,
+  "ssim_glasses": 0.34756575524806976,
+  "ssim_no_glasses": 0.3551774322986603,
+  "ssim_average": 0.351371593773365
+}

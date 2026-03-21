@@ -1,0 +1,13 @@
+{
+  "name": "Exp1: D_Steps 3",
+  "changed_param": "D_STEPS",
+  "changed_value": "3",
+  "best_g_loss": 4.1110072637059885,
+  "final_d_loss": 0.52593067250434,
+  "final_g_loss": 4.313963217340457,
+  "g_params": 6583939,
+  "d_params": 2941505,
+  "ssim_glasses": 0.34254753589630127,
+  "ssim_no_glasses": 0.32982058823108673,
+  "ssim_average": 0.336184062063694
+}

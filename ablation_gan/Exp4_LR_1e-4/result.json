@@ -1,0 +1,13 @@
+{
+  "name": "Exp4: LR 1e-4",
+  "changed_param": "LR_G / LR_D",
+  "changed_value": "1e-4",
+  "best_g_loss": 1.986466074445445,
+  "final_d_loss": 0.927832808464196,
+  "final_g_loss": 2.036197772451267,
+  "g_params": 6583939,
+  "d_params": 2941505,
+  "ssim_glasses": 0.3452702611684799,
+  "ssim_no_glasses": 0.3467738926410675,
+  "ssim_average": 0.3460220769047737
+}

@@ -1,0 +1,13 @@
+{
+  "name": "Exp5: LeakyReLU Gen",
+  "changed_param": "G_ACTIVATION",
+  "changed_value": "leakyrelu",
+  "best_g_loss": 2.028430362415921,
+  "final_d_loss": 0.8254900813862017,
+  "final_g_loss": 2.638048484067249,
+  "g_params": 6583939,
+  "d_params": 2941505,
+  "ssim_glasses": 0.30074337124824524,
+  "ssim_no_glasses": 0.3269897699356079,
+  "ssim_average": 0.3138665705919266
+}
