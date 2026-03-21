@@ -1,0 +1,11 @@
+{
+  "name": "Exp3: LR 5e-4",
+  "changed_param": "LR",
+  "changed_value": "5e-4",
+  "best_loss": 0.015320881272857197,
+  "final_loss": 0.015778223330226656,
+  "params": 55518595,
+  "ssim_glasses": 0.27640683948993683,
+  "ssim_no_glasses": 0.2799929082393646,
+  "ssim_average": 0.2781998738646507
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Exp4: Base Dim 32",
+  "changed_param": "BASE_DIM",
+  "changed_value": "32",
+  "best_loss": 0.017348570823788833,
+  "final_loss": 0.017348570823788833,
+  "params": 13892291,
+  "ssim_glasses": 0.29225969314575195,
+  "ssim_no_glasses": 0.2875166982412338,
+  "ssim_average": 0.2898881956934929
+}

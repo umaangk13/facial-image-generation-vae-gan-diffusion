@@ -1,0 +1,11 @@
+{
+  "name": "Exp2: KL Weight 0.05",
+  "changed_param": "KL_WEIGHT",
+  "changed_value": "0.05",
+  "final_loss": 0.043265967469686153,
+  "best_loss": 0.043265967469686153,
+  "params": 2923587,
+  "ssim_glasses": 0.4322816729545593,
+  "ssim_no_glasses": 0.42479419708251953,
+  "ssim_average": 0.42853793501853943
+}

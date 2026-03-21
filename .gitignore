@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+
+# Data & large files
+images/
+final_train.csv
+*.pth
+
+# Assignment PDF
+Gen AI - Assignment 1.pdf
+
+# Old/scratch
+old/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

@@ -1,0 +1,68 @@
+[
+  {
+    "name": "Baseline",
+    "changed_param": "None",
+    "changed_value": "-",
+    "best_loss": 0.015318296913905308,
+    "final_loss": 0.016838932272572167,
+    "params": 55518595,
+    "ssim_glasses": 0.32993005216121674,
+    "ssim_no_glasses": 0.33236511051654816,
+    "ssim_average": 0.33114758133888245
+  },
+  {
+    "name": "Exp1: Timesteps 200",
+    "changed_param": "TIMESTEPS",
+    "changed_value": "200",
+    "best_loss": 0.03330105852383452,
+    "final_loss": 0.036256487087274976,
+    "params": 55518595,
+    "ssim_glasses": 0.3594301640987396,
+    "ssim_no_glasses": 0.33185310661792755,
+    "ssim_average": 0.3456416353583336
+  },
+  {
+    "name": "Exp2: Beta End 0.05",
+    "changed_param": "BETA_END",
+    "changed_value": "0.05",
+    "best_loss": 0.00980641351093371,
+    "final_loss": 0.012100284602731848,
+    "params": 55518595,
+    "ssim_glasses": 0.33597229421138763,
+    "ssim_no_glasses": 0.3661710023880005,
+    "ssim_average": 0.35107164829969406
+  },
+  {
+    "name": "Exp3: LR 5e-4",
+    "changed_param": "LR",
+    "changed_value": "5e-4",
+    "best_loss": 0.015320881272857197,
+    "final_loss": 0.015778223330226656,
+    "params": 55518595,
+    "ssim_glasses": 0.27640683948993683,
+    "ssim_no_glasses": 0.2799929082393646,
+    "ssim_average": 0.2781998738646507
+  },
+  {
+    "name": "Exp4: Base Dim 32",
+    "changed_param": "BASE_DIM",
+    "changed_value": "32",
+    "best_loss": 0.017348570823788833,
+    "final_loss": 0.017348570823788833,
+    "params": 13892291,
+    "ssim_glasses": 0.29225969314575195,
+    "ssim_no_glasses": 0.2875166982412338,
+    "ssim_average": 0.2898881956934929
+  },
+  {
+    "name": "Exp5: Res Blocks 1",
+    "changed_param": "NUM_RES_BLOCKS",
+    "changed_value": "1",
+    "best_loss": 0.015937947671120174,
+    "final_loss": 0.017064149927300137,
+    "params": 38649155,
+    "ssim_glasses": 0.3506656140089035,
+    "ssim_no_glasses": 0.3544416278600693,
+    "ssim_average": 0.3525536209344864
+  }
+]
