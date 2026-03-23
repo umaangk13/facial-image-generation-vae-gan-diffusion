@@ -2,7 +2,7 @@
 
 This repository contains the implementation of three distinct generative models—**Variational Autoencoder (VAE)**, **Generative Adversarial Network (GAN)**, and **Denoising Diffusion Probabilistic Model (DDPM)**—designed to generate 64x64 face images. 
 
-The primary objective is to implement these architectures from scratch using PyTorch, perform class-conditional generation (faces with and without glasses), and systematically evaluate their performance using the Structural Similarity Index Measure (SSIM) and automated ablation studies.
+The primary objective is to implement these architectures from scratch using PyTorch, perform class-conditional generation (faces with and without glasses), and systematically evaluate their performance using the Fréchet Inception Distance (FID) and automated ablation studies.
 
 Developed for **CS F437: Generative AI** (Assignment 1).
 
@@ -15,9 +15,9 @@ Developed for **CS F437: Generative AI** (Assignment 1).
     *   **DCGAN (`gan.py` & `gan2.py`)**: Implementations of both Unconditional and Conditional DCGAN architectures.
     *   **DDPM (`diffusion.py`)**: A conditional Denoising Diffusion Probabilistic Model utilizing a custom UNet with sinusoidal timestep embeddings.
 *   **Modern Architectural Tweaks:** Custom **Residual Blocks** (`x = x + layer(x)`) implemented across the VAE Encoder/Decoder and the GAN Generator/Discriminator to solve vanishing gradients, smooth the loss landscape, and accelerate convergence.
-*   **Automated Ablation Studies:** Dedicated scripts (`ablation_*.py`) that automatically run grid searches over ≥5 hyperparameters per model, compute SSIM metrics, save progression images, and output markdown summary tables. Resume-capability built in.
-*   **Automated Evaluation:** Pure PyTorch implementation of batched SSIM (`evaluate.py`) to benchmark the quality of generated faces against the real dataset.
-*   **Visualizations:** Includes utilities to automatically generate and save left-to-right architectural block diagrams for all models using `matplotlib`.
+*   **Automated Ablation Studies:** Dedicated scripts (`ablation_*.py`) that automatically run grid searches over ≥5 hyperparameters per model, save progression images, and output markdown summary tables. Resume-capability built in.
+*   **Automated Evaluation:** Evaluation pipeline utilizing `torch-fidelity` to compute the Fréchet Inception Distance (FID) score (`evaluate.py`, `eval_fid_from_checkpoints.py`) to benchmark the quality and diversity of generated faces against the real dataset.
+*   **Visualizations & Demos:** Includes utilities to automatically generate model output demos (`generate_demo.py`) and save architectural block diagrams.
 
 ## 📁 Repository Structure
 
@@ -27,12 +27,14 @@ Developed for **CS F437: Generative AI** (Assignment 1).
 ├── gan.py                    # Unconditional DCGAN (Generator, Discriminator, ResBlocks)
 ├── gan2.py                   # Conditional cGAN architecture
 ├── diffusion.py              # DDPM noise schedule, training loop, and UNet
-├── evaluate.py               # Pure-PyTorch SSIM calculation and model benchmarking
+├── evaluate.py               # FID score calculation and model benchmarking
 ├── ablation_vae.py           # Automated ablation runner for VAE
 ├── ablation_gan.py           # Automated ablation runner for GAN
 ├── ablation_diffusion.py     # Automated ablation runner for Diffusion
+├── eval_fid_from_checkpoints.py # Batch offline FID calculator for ablation checkpoints
+├── generate_demo.py          # Unified image generation demo script for all models
 ├── describe_models.py        # CLI tool to print rich layer-by-layer parameter summaries
-├── visualise_architectures.py# Generates colorful block diagrams (PNGs) of model layers
+├── visuals/                  # Organized output folders (`diffusion_results/`, `gan_results/`, etc.)
 ├── final_train.csv           # Dataset labels (binary: has_glasses)
 ├── requirements.txt          # Python package dependencies
 └── README.md                 # You are here
@@ -83,18 +85,20 @@ python ablation_gan.py
 python ablation_diffusion.py
 ```
 
-### 3. Visualizing Architectures
-To generate left-to-right PNG block diagrams of the VAE, GAN, and Diffusion architectures locally:
+### 3. Running the Generation Demo (Inference)
+To run a unified inference script that loads the best trained weights for the VAE, GAN, and Diffusion models and generates a grid of sample outputs automatically:
 ```bash
-python visualise_architectures.py
+python generate_demo.py
 ```
-To print a rich text summary of parameters and tensor dimensions:
+*Generated images are automatically saved to the `demo_generated/` folder.*
+
+### 4. Evaluating FID Metrics
+To recalculate FID scores directly from existing ablation checkpoints without retraining:
 ```bash
-python describe_models.py
+python eval_fid_from_checkpoints.py
 ```
 
-### 4. Evaluation 
-To run the automated SSIM benchmark against a specific model checkpoint:
+To run the automated FID benchmark against a specific model checkpoint manually:
 ```bash
 python evaluate.py --model vae --checkpoint vae_best.pth
 ```
