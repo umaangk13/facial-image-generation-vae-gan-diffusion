@@ -59,8 +59,14 @@ Developed for **CS F437: Generative AI** (Assignment 1).
    pip install -r requirements.txt
    ```
 
-3. Ensure the `images/` directory (containing the 64x64 face dataset) and `final_train.csv` are placed in the root of the project.
-
+3. Download the dataset from Kaggle and ensure the generated images are placed in the `images/` directory at the root of the project. To download via Python:
+   ```python
+   import kagglehub
+   # Download latest version
+   path = kagglehub.dataset_download("jeffheaton/glasses-or-no-glasses")
+   print("Path to dataset files:", path)
+   ```
+   *Make sure you also place `final_train.csv` in the root of the project.*
 ---
 
 ## 🏃‍♂️ Running the Code
