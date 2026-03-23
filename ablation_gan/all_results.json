@@ -8,9 +8,9 @@
     "final_g_loss": 2.0120853787394846,
     "g_params": 6583939,
     "d_params": 2941505,
-    "ssim_glasses": 0.34756575524806976,
-    "ssim_no_glasses": 0.3551774322986603,
-    "ssim_average": 0.351371593773365
+    "fid_glasses": 155.50860595703125,
+    "fid_no_glasses": 152.6344757080078,
+    "fid_average": 154.07154083251953
   },
   {
     "name": "Exp1: D_Steps 3",
@@ -21,9 +21,9 @@
     "final_g_loss": 4.313963217340457,
     "g_params": 6583939,
     "d_params": 2941505,
-    "ssim_glasses": 0.34254753589630127,
-    "ssim_no_glasses": 0.32982058823108673,
-    "ssim_average": 0.336184062063694
+    "fid_glasses": 134.82330322265625,
+    "fid_no_glasses": 133.66555786132812,
+    "fid_average": 134.2444305419922
   },
   {
     "name": "Exp2: No Label Smooth",
@@ -34,9 +34,9 @@
     "final_g_loss": 2.0921963005308895,
     "g_params": 6583939,
     "d_params": 2941505,
-    "ssim_glasses": 0.32164911925792694,
-    "ssim_no_glasses": 0.3247512876987457,
-    "ssim_average": 0.32320020347833633
+    "fid_glasses": 165.2259063720703,
+    "fid_no_glasses": 163.03790283203125,
+    "fid_average": 164.13190460205078
   },
   {
     "name": "Exp3: Dropout 0.5",
@@ -47,9 +47,9 @@
     "final_g_loss": 1.844862969437982,
     "g_params": 6583939,
     "d_params": 2941505,
-    "ssim_glasses": 0.33360886573791504,
-    "ssim_no_glasses": 0.3543577790260315,
-    "ssim_average": 0.34398332238197327
+    "fid_glasses": 172.18678283691406,
+    "fid_no_glasses": 156.07752990722656,
+    "fid_average": 164.1321563720703
   },
   {
     "name": "Exp4: LR 1e-4",
@@ -60,9 +60,9 @@
     "final_g_loss": 2.036197772451267,
     "g_params": 6583939,
     "d_params": 2941505,
-    "ssim_glasses": 0.3452702611684799,
-    "ssim_no_glasses": 0.3467738926410675,
-    "ssim_average": 0.3460220769047737
+    "fid_glasses": 179.41331481933594,
+    "fid_no_glasses": 166.6368865966797,
+    "fid_average": 173.0251007080078
   },
   {
     "name": "Exp5: LeakyReLU Gen",
@@ -73,8 +73,8 @@
     "final_g_loss": 2.638048484067249,
     "g_params": 6583939,
     "d_params": 2941505,
-    "ssim_glasses": 0.30074337124824524,
-    "ssim_no_glasses": 0.3269897699356079,
-    "ssim_average": 0.3138665705919266
+    "fid_glasses": 245.26658630371094,
+    "fid_no_glasses": 225.44143676757812,
+    "fid_average": 235.35401153564453
   }
 ]

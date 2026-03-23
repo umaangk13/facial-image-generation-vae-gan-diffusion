@@ -27,7 +27,7 @@ os.environ['NO_ALBUMENTATIONS_UPDATE'] = '1'
 from dataset import GlassesDataset
 from diffusion import (build_unet, GaussianDiffusion,
                        train_one_epoch, denorm)
-from evaluate import compute_ssim, batch_ssim, get_real_images
+from evaluate import batch_fid, get_real_images
 
 
 # ─────────────────────────────────────────────
@@ -175,18 +175,18 @@ def run_experiment(config, dataset, eval_dataset, device, output_dir):
     plt.savefig(os.path.join(exp_dir, 'generated.png'), dpi=150)
     plt.close()
 
-    # Compute SSIM
+    # Compute FID
     num_eval = 50
-    ssim_scores = {}
+    fid_scores = {}
     for label, label_name in [(1, 'Glasses'), (0, 'No Glasses')]:
         generated = diffusion.generate(model, num_eval, label, device)
         real = get_real_images(eval_dataset, label, num_eval, device)
         perm = torch.randperm(real.size(0))
         real = real[perm]
-        ssim_val = batch_ssim(generated, real)
-        ssim_scores[label_name] = ssim_val
+        fid_val = batch_fid(generated, real, device)
+        fid_scores[label_name] = fid_val
 
-    ssim_scores['Average'] = np.mean(list(ssim_scores.values()))
+    fid_scores['Average'] = np.mean(list(fid_scores.values()))
 
     result = {
         'name': name,
@@ -195,18 +195,18 @@ def run_experiment(config, dataset, eval_dataset, device, output_dir):
         'best_loss': best_loss,
         'final_loss': train_losses[-1],
         'params': param_count,
-        'ssim_glasses': ssim_scores['Glasses'],
-        'ssim_no_glasses': ssim_scores['No Glasses'],
-        'ssim_average': ssim_scores['Average'],
+        'fid_glasses': fid_scores['Glasses'],
+        'fid_no_glasses': fid_scores['No Glasses'],
+        'fid_average': fid_scores['Average'],
     }
 
     with open(os.path.join(exp_dir, 'result.json'), 'w') as f:
         json.dump(result, f, indent=2)
 
     print(f"  Best Loss: {best_loss:.6f}")
-    print(f"  SSIM — Glasses: {ssim_scores['Glasses']:.4f}  "
-          f"No Glasses: {ssim_scores['No Glasses']:.4f}  "
-          f"Avg: {ssim_scores['Average']:.4f}")
+    print(f"  FID — Glasses: {fid_scores['Glasses']:.4f}  "
+          f"No Glasses: {fid_scores['No Glasses']:.4f}  "
+          f"Avg: {fid_scores['Average']:.4f}")
     print(f"  Saved to {exp_dir}")
 
     return result
@@ -234,59 +234,27 @@ if __name__ == '__main__':
     os.makedirs(output_dir, exist_ok=True)
 
     all_results = []
-    
-    # Try to load existing results first
-    results_file = os.path.join(output_dir, 'all_results.json')
-    if os.path.exists(results_file):
-        try:
-            with open(results_file, 'r') as f:
-                existing_results = json.load(f)
-                # Create a lookup dictionary by experiment name
-                existing_dict = {r['name']: r for r in existing_results}
-                print(f"Loaded {len(existing_dict)} existing results from {results_file}")
-        except Exception as e:
-            print(f"Could not load existing results: {e}")
-            existing_dict = {}
-    else:
-        existing_dict = {}
-
     for config in ALL_CONFIGS:
-        name = config['name']
-        exp_dir = os.path.join(output_dir, name.replace(': ', '_').replace(' ', '_'))
-        exp_result_file = os.path.join(exp_dir, 'result.json')
-        
-        # If this experiment already finished successfully, use the saved result
-        if os.path.exists(exp_result_file) and name in existing_dict:
-            print(f"\n{'═' * 60}")
-            print(f"  ⏭️ SKIPPING: {name} (Already completed)")
-            print(f"{'═' * 60}")
-            all_results.append(existing_dict[name])
-        else:
-            # Otherwise, run it
-            result = run_experiment(
-                config, train_dataset, eval_dataset, device, output_dir
-            )
-            all_results.append(result)
-            
-            # Save progress incrementally just in case it crashes again
-            with open(results_file, 'w') as f:
-                json.dump(all_results, f, indent=2)
+        result = run_experiment(
+            config, train_dataset, eval_dataset, device, output_dir
+        )
+        all_results.append(result)
 
     # ── Summary table ────────────────────────────────────────
     print(f"\n\n{'═' * 85}")
     print(f"  DDPM ABLATION TABLE")
     print(f"{'═' * 85}")
     header = (f"  {'Experiment':<28} {'Changed Param':<16} {'Value':<10} "
-              f"{'Loss':>8} {'SSIM(G)':>8} {'SSIM(NG)':>9} {'SSIM(Avg)':>9}")
+              f"{'Loss':>8} {'FID(G)':>8} {'FID(NG)':>9} {'FID(Avg)':>9}")
     print(header)
     print(f"  {'─' * 80}")
     for r in all_results:
         row = (f"  {r['name']:<28} {r['changed_param']:<16} "
                f"{r['changed_value']:<10} "
                f"{r['best_loss']:>8.6f} "
-               f"{r['ssim_glasses']:>8.4f} "
-               f"{r['ssim_no_glasses']:>9.4f} "
-               f"{r['ssim_average']:>9.4f}")
+               f"{r['fid_glasses']:>8.4f} "
+               f"{r['fid_no_glasses']:>9.4f} "
+               f"{r['fid_average']:>9.4f}")
         print(row)
     print(f"{'═' * 85}")
 
@@ -294,15 +262,15 @@ if __name__ == '__main__':
         f.write("DDPM ABLATION TABLE\n")
         f.write("=" * 85 + "\n")
         f.write(f"{'Experiment':<28} {'Changed Param':<16} {'Value':<10} "
-                f"{'Loss':>8} {'SSIM(G)':>8} {'SSIM(NG)':>9} {'SSIM(Avg)':>9}\n")
+                f"{'Loss':>8} {'FID(G)':>8} {'FID(NG)':>9} {'FID(Avg)':>9}\n")
         f.write("-" * 85 + "\n")
         for r in all_results:
             f.write(f"{r['name']:<28} {r['changed_param']:<16} "
                     f"{r['changed_value']:<10} "
                     f"{r['best_loss']:>8.6f} "
-                    f"{r['ssim_glasses']:>8.4f} "
-                    f"{r['ssim_no_glasses']:>9.4f} "
-                    f"{r['ssim_average']:>9.4f}\n")
+                    f"{r['fid_glasses']:>8.4f} "
+                    f"{r['fid_no_glasses']:>9.4f} "
+                    f"{r['fid_average']:>9.4f}\n")
         f.write("=" * 85 + "\n")
 
     with open(os.path.join(output_dir, 'all_results.json'), 'w') as f:

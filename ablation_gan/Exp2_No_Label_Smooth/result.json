@@ -7,7 +7,7 @@
   "final_g_loss": 2.0921963005308895,
   "g_params": 6583939,
   "d_params": 2941505,
-  "ssim_glasses": 0.32164911925792694,
-  "ssim_no_glasses": 0.3247512876987457,
-  "ssim_average": 0.32320020347833633
+  "fid_glasses": 165.2259063720703,
+  "fid_no_glasses": 163.03790283203125,
+  "fid_average": 164.13190460205078
 }

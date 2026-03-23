@@ -2,10 +2,10 @@
   "name": "Exp5: Bilinear Upsample",
   "changed_param": "USE_INTERP",
   "changed_value": "True",
-  "final_loss": 0.09006508933320927,
-  "best_loss": 0.09006508933320927,
-  "params": 2621859,
-  "ssim_glasses": 0.4450286477804184,
-  "ssim_no_glasses": 0.44482599198818207,
-  "ssim_average": 0.44492731988430023
+  "final_loss": 0.09035007674602946,
+  "best_loss": 0.08989958137653437,
+  "params": 2710115,
+  "fid_glasses": 210.79989624023438,
+  "fid_no_glasses": 216.1981964111328,
+  "fid_average": 213.4990463256836
 }

@@ -2,10 +2,10 @@
   "name": "Baseline",
   "changed_param": "None",
   "changed_value": "-",
-  "final_loss": 0.08917352215499635,
-  "best_loss": 0.08904663824541553,
-  "params": 2923587,
-  "ssim_glasses": 0.45057040452957153,
-  "ssim_no_glasses": 0.4611239731311798,
-  "ssim_average": 0.45584718883037567
+  "final_loss": 0.08865817251858438,
+  "best_loss": 0.08855155537462538,
+  "params": 3656963,
+  "fid_glasses": 169.55722045898438,
+  "fid_no_glasses": 167.20144653320312,
+  "fid_average": 168.37933349609375
 }

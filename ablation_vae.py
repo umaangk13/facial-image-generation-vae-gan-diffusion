@@ -24,7 +24,7 @@ import numpy as np
 os.environ['NO_ALBUMENTATIONS_UPDATE'] = '1'
 from dataset import GlassesDataset
 from vae import CVAE, vae_loss, train_one_epoch
-from evaluate import compute_ssim, batch_ssim, get_real_images
+from evaluate import batch_fid, get_real_images
 
 
 # ─────────────────────────────────────────────
@@ -182,18 +182,18 @@ def run_experiment(config, dataset, eval_dataset, device, output_dir):
     plt.savefig(os.path.join(exp_dir, 'generated.png'), dpi=150)
     plt.close()
 
-    # Compute SSIM
+    # Compute FID
     num_eval = 50
-    ssim_scores = {}
+    fid_scores = {}
     for label, label_name in [(1, 'Glasses'), (0, 'No Glasses')]:
         generated = model.generate(num_eval, label, device)
         real = get_real_images(eval_dataset, label, num_eval, device)
         perm = torch.randperm(real.size(0))
         real = real[perm]
-        ssim_val = batch_ssim(generated, real)
-        ssim_scores[label_name] = ssim_val
+        fid_val = batch_fid(generated, real, device)
+        fid_scores[label_name] = fid_val
 
-    ssim_scores['Average'] = np.mean(list(ssim_scores.values()))
+    fid_scores['Average'] = np.mean(list(fid_scores.values()))
 
     # Save results
     result = {
@@ -203,18 +203,18 @@ def run_experiment(config, dataset, eval_dataset, device, output_dir):
         'final_loss': train_losses[-1],
         'best_loss': best_loss,
         'params': param_count,
-        'ssim_glasses': ssim_scores['Glasses'],
-        'ssim_no_glasses': ssim_scores['No Glasses'],
-        'ssim_average': ssim_scores['Average'],
+        'fid_glasses': fid_scores['Glasses'],
+        'fid_no_glasses': fid_scores['No Glasses'],
+        'fid_average': fid_scores['Average'],
     }
 
     with open(os.path.join(exp_dir, 'result.json'), 'w') as f:
         json.dump(result, f, indent=2)
 
     print(f"  Final Loss: {train_losses[-1]:.4f}")
-    print(f"  SSIM — Glasses: {ssim_scores['Glasses']:.4f}  "
-          f"No Glasses: {ssim_scores['No Glasses']:.4f}  "
-          f"Avg: {ssim_scores['Average']:.4f}")
+    print(f"  FID — Glasses: {fid_scores['Glasses']:.4f}  "
+          f"No Glasses: {fid_scores['No Glasses']:.4f}  "
+          f"Avg: {fid_scores['Average']:.4f}")
     print(f"  Saved to {exp_dir}")
 
     return result
@@ -255,16 +255,16 @@ if __name__ == '__main__':
     print(f"  CVAE ABLATION TABLE")
     print(f"{'═' * 85}")
     header = (f"  {'Experiment':<28} {'Changed Param':<16} {'Value':<10} "
-              f"{'Loss':>8} {'SSIM(G)':>8} {'SSIM(NG)':>9} {'SSIM(Avg)':>9}")
+              f"{'Loss':>8} {'FID(G)':>8} {'FID(NG)':>9} {'FID(Avg)':>9}")
     print(header)
     print(f"  {'─' * 80}")
     for r in all_results:
         row = (f"  {r['name']:<28} {r['changed_param']:<16} "
                f"{r['changed_value']:<10} "
                f"{r['best_loss']:>8.4f} "
-               f"{r['ssim_glasses']:>8.4f} "
-               f"{r['ssim_no_glasses']:>9.4f} "
-               f"{r['ssim_average']:>9.4f}")
+               f"{r['fid_glasses']:>8.4f} "
+               f"{r['fid_no_glasses']:>9.4f} "
+               f"{r['fid_average']:>9.4f}")
         print(row)
     print(f"{'═' * 85}")
 
@@ -273,15 +273,15 @@ if __name__ == '__main__':
         f.write("CVAE ABLATION TABLE\n")
         f.write("=" * 85 + "\n")
         f.write(f"{'Experiment':<28} {'Changed Param':<16} {'Value':<10} "
-                f"{'Loss':>8} {'SSIM(G)':>8} {'SSIM(NG)':>9} {'SSIM(Avg)':>9}\n")
+                f"{'Loss':>8} {'FID(G)':>8} {'FID(NG)':>9} {'FID(Avg)':>9}\n")
         f.write("-" * 85 + "\n")
         for r in all_results:
             f.write(f"{r['name']:<28} {r['changed_param']:<16} "
                     f"{r['changed_value']:<10} "
                     f"{r['best_loss']:>8.4f} "
-                    f"{r['ssim_glasses']:>8.4f} "
-                    f"{r['ssim_no_glasses']:>9.4f} "
-                    f"{r['ssim_average']:>9.4f}\n")
+                    f"{r['fid_glasses']:>8.4f} "
+                    f"{r['fid_no_glasses']:>9.4f} "
+                    f"{r['fid_average']:>9.4f}\n")
         f.write("=" * 85 + "\n")
 
     # Save as JSON too

@@ -2,10 +2,10 @@
   "name": "Exp2: KL Weight 0.05",
   "changed_param": "KL_WEIGHT",
   "changed_value": "0.05",
-  "final_loss": 0.043265967469686153,
-  "best_loss": 0.043265967469686153,
-  "params": 2923587,
-  "ssim_glasses": 0.4322816729545593,
-  "ssim_no_glasses": 0.42479419708251953,
-  "ssim_average": 0.42853793501853943
+  "final_loss": 0.043889207587500284,
+  "best_loss": 0.04385985908614602,
+  "params": 3656963,
+  "fid_glasses": 142.63255310058594,
+  "fid_no_glasses": 144.52423095703125,
+  "fid_average": 143.5783920288086
 }

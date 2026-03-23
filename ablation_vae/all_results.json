@@ -3,66 +3,66 @@
     "name": "Baseline",
     "changed_param": "None",
     "changed_value": "-",
-    "final_loss": 0.08917352215499635,
-    "best_loss": 0.08904663824541553,
-    "params": 2923587,
-    "ssim_glasses": 0.45057040452957153,
-    "ssim_no_glasses": 0.4611239731311798,
-    "ssim_average": 0.45584718883037567
+    "final_loss": 0.08865817251858438,
+    "best_loss": 0.08855155537462538,
+    "params": 3656963,
+    "fid_glasses": 169.55722045898438,
+    "fid_no_glasses": 167.20144653320312,
+    "fid_average": 168.37933349609375
   },
   {
     "name": "Exp1: Latent Dim 32",
     "changed_param": "LATENT_DIM",
     "changed_value": "32",
-    "final_loss": 0.12309882576298561,
-    "best_loss": 0.12309882576298561,
-    "params": 1743747,
-    "ssim_glasses": 0.4768744260072708,
-    "ssim_no_glasses": 0.4846411496400833,
-    "ssim_average": 0.48075778782367706
+    "final_loss": 0.12432902391738952,
+    "best_loss": 0.1236473935994373,
+    "params": 2477123,
+    "fid_glasses": 218.72413635253906,
+    "fid_no_glasses": 241.3092498779297,
+    "fid_average": 230.01669311523438
   },
   {
     "name": "Exp2: KL Weight 0.05",
     "changed_param": "KL_WEIGHT",
     "changed_value": "0.05",
-    "final_loss": 0.043265967469686153,
-    "best_loss": 0.043265967469686153,
-    "params": 2923587,
-    "ssim_glasses": 0.4322816729545593,
-    "ssim_no_glasses": 0.42479419708251953,
-    "ssim_average": 0.42853793501853943
+    "final_loss": 0.043889207587500284,
+    "best_loss": 0.04385985908614602,
+    "params": 3656963,
+    "fid_glasses": 142.63255310058594,
+    "fid_no_glasses": 144.52423095703125,
+    "fid_average": 143.5783920288086
   },
   {
     "name": "Exp3: Kernel 5",
     "changed_param": "CONV_KERNEL",
     "changed_value": "5",
-    "final_loss": 0.08882147144929618,
-    "best_loss": 0.08882147144929618,
-    "params": 3613763,
-    "ssim_glasses": 0.4494067579507828,
-    "ssim_no_glasses": 0.4527563750743866,
-    "ssim_average": 0.4510815665125847
+    "final_loss": 0.08883931036967381,
+    "best_loss": 0.08875146218735701,
+    "params": 4347139,
+    "fid_glasses": 171.80374145507812,
+    "fid_no_glasses": 174.2004852294922,
+    "fid_average": 173.00211334228516
   },
   {
     "name": "Exp4: LeakyReLU",
     "changed_param": "ACTIVATION",
     "changed_value": "leakyrelu",
-    "final_loss": 0.08886865061369671,
-    "best_loss": 0.08886865061369671,
-    "params": 2923587,
-    "ssim_glasses": 0.4385307729244232,
-    "ssim_no_glasses": 0.4431554973125458,
-    "ssim_average": 0.4408431351184845
+    "final_loss": 0.08904273248022529,
+    "best_loss": 0.08904273248022529,
+    "params": 3656963,
+    "fid_glasses": 159.57830810546875,
+    "fid_no_glasses": 156.99383544921875,
+    "fid_average": 158.28607177734375
   },
   {
     "name": "Exp5: Bilinear Upsample",
     "changed_param": "USE_INTERP",
     "changed_value": "True",
-    "final_loss": 0.09006508933320927,
-    "best_loss": 0.09006508933320927,
-    "params": 2621859,
-    "ssim_glasses": 0.4450286477804184,
-    "ssim_no_glasses": 0.44482599198818207,
-    "ssim_average": 0.44492731988430023
+    "final_loss": 0.09035007674602946,
+    "best_loss": 0.08989958137653437,
+    "params": 2710115,
+    "fid_glasses": 210.79989624023438,
+    "fid_no_glasses": 216.1981964111328,
+    "fid_average": 213.4990463256836
   }
 ]

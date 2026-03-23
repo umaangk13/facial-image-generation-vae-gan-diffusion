@@ -1,11 +1,11 @@
 GAN ABLATION TABLE
 =====================================================================================
-Experiment                   Changed Param    Value        G Loss  SSIM(G)  SSIM(NG) SSIM(Avg)
+Experiment                   Changed Param    Value        G Loss   FID(G)   FID(NG)  FID(Avg)
 -------------------------------------------------------------------------------------
-Baseline                     None             -            1.9592   0.3476    0.3552    0.3514
-Exp1: D_Steps 3              D_STEPS          3            4.1110   0.3425    0.3298    0.3362
-Exp2: No Label Smooth        LABEL_SMOOTHING  0.0          1.9736   0.3216    0.3248    0.3232
-Exp3: Dropout 0.5            DROPOUT          0.5          1.8115   0.3336    0.3544    0.3440
-Exp4: LR 1e-4                LR_G / LR_D      1e-4         1.9865   0.3453    0.3468    0.3460
-Exp5: LeakyReLU Gen          G_ACTIVATION     leakyrelu    2.0284   0.3007    0.3270    0.3139
+Baseline                     None             -            1.9592 155.5086  152.6345  154.0715
+Exp1: D_Steps 3              D_STEPS          3            4.1110 134.8233  133.6656  134.2444
+Exp2: No Label Smooth        LABEL_SMOOTHING  0.0          1.9736 165.2259  163.0379  164.1319
+Exp3: Dropout 0.5            DROPOUT          0.5          1.8115 172.1868  156.0775  164.1322
+Exp4: LR 1e-4                LR_G / LR_D      1e-4         1.9865 179.4133  166.6369  173.0251
+Exp5: LeakyReLU Gen          G_ACTIVATION     leakyrelu    2.0284 245.2666  225.4414  235.3540
 =====================================================================================

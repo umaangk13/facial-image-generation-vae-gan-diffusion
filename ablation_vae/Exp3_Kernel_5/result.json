@@ -2,10 +2,10 @@
   "name": "Exp3: Kernel 5",
   "changed_param": "CONV_KERNEL",
   "changed_value": "5",
-  "final_loss": 0.08882147144929618,
-  "best_loss": 0.08882147144929618,
-  "params": 3613763,
-  "ssim_glasses": 0.4494067579507828,
-  "ssim_no_glasses": 0.4527563750743866,
-  "ssim_average": 0.4510815665125847
+  "final_loss": 0.08883931036967381,
+  "best_loss": 0.08875146218735701,
+  "params": 4347139,
+  "fid_glasses": 171.80374145507812,
+  "fid_no_glasses": 174.2004852294922,
+  "fid_average": 173.00211334228516
 }

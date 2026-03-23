@@ -2,10 +2,10 @@
   "name": "Exp1: Latent Dim 32",
   "changed_param": "LATENT_DIM",
   "changed_value": "32",
-  "final_loss": 0.12309882576298561,
-  "best_loss": 0.12309882576298561,
-  "params": 1743747,
-  "ssim_glasses": 0.4768744260072708,
-  "ssim_no_glasses": 0.4846411496400833,
-  "ssim_average": 0.48075778782367706
+  "final_loss": 0.12432902391738952,
+  "best_loss": 0.1236473935994373,
+  "params": 2477123,
+  "fid_glasses": 218.72413635253906,
+  "fid_no_glasses": 241.3092498779297,
+  "fid_average": 230.01669311523438
 }

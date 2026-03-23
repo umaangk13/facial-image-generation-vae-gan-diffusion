@@ -2,10 +2,10 @@
   "name": "Exp4: LeakyReLU",
   "changed_param": "ACTIVATION",
   "changed_value": "leakyrelu",
-  "final_loss": 0.08886865061369671,
-  "best_loss": 0.08886865061369671,
-  "params": 2923587,
-  "ssim_glasses": 0.4385307729244232,
-  "ssim_no_glasses": 0.4431554973125458,
-  "ssim_average": 0.4408431351184845
+  "final_loss": 0.08904273248022529,
+  "best_loss": 0.08904273248022529,
+  "params": 3656963,
+  "fid_glasses": 159.57830810546875,
+  "fid_no_glasses": 156.99383544921875,
+  "fid_average": 158.28607177734375
 }

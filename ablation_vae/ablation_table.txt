@@ -1,11 +1,11 @@
 CVAE ABLATION TABLE
 =====================================================================================
-Experiment                   Changed Param    Value          Loss  SSIM(G)  SSIM(NG) SSIM(Avg)
+Experiment                   Changed Param    Value          Loss   FID(G)   FID(NG)  FID(Avg)
 -------------------------------------------------------------------------------------
-Baseline                     None             -            0.0890   0.4506    0.4611    0.4558
-Exp1: Latent Dim 32          LATENT_DIM       32           0.1231   0.4769    0.4846    0.4808
-Exp2: KL Weight 0.05         KL_WEIGHT        0.05         0.0433   0.4323    0.4248    0.4285
-Exp3: Kernel 5               CONV_KERNEL      5            0.0888   0.4494    0.4528    0.4511
-Exp4: LeakyReLU              ACTIVATION       leakyrelu    0.0889   0.4385    0.4432    0.4408
-Exp5: Bilinear Upsample      USE_INTERP       True         0.0901   0.4450    0.4448    0.4449
+Baseline                     None             -            0.0886 169.5572  167.2014  168.3793
+Exp1: Latent Dim 32          LATENT_DIM       32           0.1236 218.7241  241.3092  230.0167
+Exp2: KL Weight 0.05         KL_WEIGHT        0.05         0.0439 142.6326  144.5242  143.5784
+Exp3: Kernel 5               CONV_KERNEL      5            0.0888 171.8037  174.2005  173.0021
+Exp4: LeakyReLU              ACTIVATION       leakyrelu    0.0890 159.5783  156.9938  158.2861
+Exp5: Bilinear Upsample      USE_INTERP       True         0.0899 210.7999  216.1982  213.4990
 =====================================================================================

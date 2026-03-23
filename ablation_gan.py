@@ -24,7 +24,7 @@ os.environ['NO_ALBUMENTATIONS_UPDATE'] = '1'
 from dataset import GlassesDataset
 from gan import (Generator, Discriminator, weights_init,
                  train_one_epoch)
-from evaluate import compute_ssim, batch_ssim, get_real_images
+from evaluate import batch_fid, get_real_images
 
 
 # ─────────────────────────────────────────────
@@ -194,9 +194,9 @@ def run_experiment(config, dataset, eval_dataset, device, output_dir):
     plt.savefig(os.path.join(exp_dir, 'generated.png'), dpi=150)
     plt.close()
 
-    # Compute SSIM (unconditional — label is ignored by GAN)
+    # Compute FID (unconditional — label is ignored by GAN)
     num_eval = 50
-    ssim_scores = {}
+    fid_scores = {}
     for label, label_name in [(1, 'Glasses'), (0, 'No Glasses')]:
         with torch.no_grad():
             z = torch.randn(num_eval, config['LATENT_DIM'], device=device)
@@ -204,10 +204,10 @@ def run_experiment(config, dataset, eval_dataset, device, output_dir):
         real = get_real_images(eval_dataset, label, num_eval, device)
         perm = torch.randperm(real.size(0))
         real = real[perm]
-        ssim_val = batch_ssim(generated, real)
-        ssim_scores[label_name] = ssim_val
+        fid_val = batch_fid(generated, real, device)
+        fid_scores[label_name] = fid_val
 
-    ssim_scores['Average'] = np.mean(list(ssim_scores.values()))
+    fid_scores['Average'] = np.mean(list(fid_scores.values()))
 
     result = {
         'name': name,
@@ -218,18 +218,18 @@ def run_experiment(config, dataset, eval_dataset, device, output_dir):
         'final_g_loss': g_losses[-1],
         'g_params': g_params,
         'd_params': d_params,
-        'ssim_glasses': ssim_scores['Glasses'],
-        'ssim_no_glasses': ssim_scores['No Glasses'],
-        'ssim_average': ssim_scores['Average'],
+        'fid_glasses': fid_scores['Glasses'],
+        'fid_no_glasses': fid_scores['No Glasses'],
+        'fid_average': fid_scores['Average'],
     }
 
     with open(os.path.join(exp_dir, 'result.json'), 'w') as f:
         json.dump(result, f, indent=2)
 
     print(f"  Best G Loss: {best_g_loss:.4f}")
-    print(f"  SSIM — Glasses: {ssim_scores['Glasses']:.4f}  "
-          f"No Glasses: {ssim_scores['No Glasses']:.4f}  "
-          f"Avg: {ssim_scores['Average']:.4f}")
+    print(f"  FID — Glasses: {fid_scores['Glasses']:.4f}  "
+          f"No Glasses: {fid_scores['No Glasses']:.4f}  "
+          f"Avg: {fid_scores['Average']:.4f}")
     print(f"  Saved to {exp_dir}")
 
     return result
@@ -268,16 +268,16 @@ if __name__ == '__main__':
     print(f"  GAN ABLATION TABLE")
     print(f"{'═' * 85}")
     header = (f"  {'Experiment':<28} {'Changed Param':<16} {'Value':<10} "
-              f"{'G Loss':>8} {'SSIM(G)':>8} {'SSIM(NG)':>9} {'SSIM(Avg)':>9}")
+              f"{'G Loss':>8} {'FID(G)':>8} {'FID(NG)':>9} {'FID(Avg)':>9}")
     print(header)
     print(f"  {'─' * 80}")
     for r in all_results:
         row = (f"  {r['name']:<28} {r['changed_param']:<16} "
                f"{r['changed_value']:<10} "
                f"{r['best_g_loss']:>8.4f} "
-               f"{r['ssim_glasses']:>8.4f} "
-               f"{r['ssim_no_glasses']:>9.4f} "
-               f"{r['ssim_average']:>9.4f}")
+               f"{r['fid_glasses']:>8.4f} "
+               f"{r['fid_no_glasses']:>9.4f} "
+               f"{r['fid_average']:>9.4f}")
         print(row)
     print(f"{'═' * 85}")
 
@@ -285,15 +285,15 @@ if __name__ == '__main__':
         f.write("GAN ABLATION TABLE\n")
         f.write("=" * 85 + "\n")
         f.write(f"{'Experiment':<28} {'Changed Param':<16} {'Value':<10} "
-                f"{'G Loss':>8} {'SSIM(G)':>8} {'SSIM(NG)':>9} {'SSIM(Avg)':>9}\n")
+                f"{'G Loss':>8} {'FID(G)':>8} {'FID(NG)':>9} {'FID(Avg)':>9}\n")
         f.write("-" * 85 + "\n")
         for r in all_results:
             f.write(f"{r['name']:<28} {r['changed_param']:<16} "
                     f"{r['changed_value']:<10} "
                     f"{r['best_g_loss']:>8.4f} "
-                    f"{r['ssim_glasses']:>8.4f} "
-                    f"{r['ssim_no_glasses']:>9.4f} "
-                    f"{r['ssim_average']:>9.4f}\n")
+                    f"{r['fid_glasses']:>8.4f} "
+                    f"{r['fid_no_glasses']:>9.4f} "
+                    f"{r['fid_average']:>9.4f}\n")
         f.write("=" * 85 + "\n")
 
     with open(os.path.join(output_dir, 'all_results.json'), 'w') as f:

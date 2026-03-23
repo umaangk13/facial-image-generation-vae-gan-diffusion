@@ -1,7 +1,8 @@
 """
-SSIM Evaluation Script for Gen AI Assignment 1
+SSIM & FID Evaluation Script for Gen AI Assignment 1
 ================================================
-Computes Structural Similarity Index (SSIM) between generated
+Computes Structural Similarity Index (SSIM) and 
+Frechet Inception Distance (FID) between generated
 and real images for VAE, GAN, and Diffusion models.
 
 Usage:
@@ -106,6 +107,29 @@ def batch_ssim(generated, real, batch_size=32):
         ssim_scores.append(ssim_val)
 
     return np.mean(ssim_scores)
+
+
+def batch_fid(generated, real, device):
+    """
+    Compute Frechet Inception Distance (FID) between generated 
+    and real images using torchmetrics.
+    
+    Both inputs are (B, C, H, W) in [-1, 1] range.
+    """
+    try:
+        from torchmetrics.image.fid import FrechetInceptionDistance
+    except ImportError:
+        raise ImportError("Please install torchmetrics to use FID: pip install torchmetrics")
+        
+    # Denormalise [-1, 1] → [0, 1] → [0, 255] uint8
+    gen = ((generated * 0.5 + 0.5).clamp(0, 1) * 255).to(torch.uint8)
+    real = ((real * 0.5 + 0.5).clamp(0, 1) * 255).to(torch.uint8)
+    
+    fid_metric = FrechetInceptionDistance(feature=2048, normalize=False).to(device)
+    fid_metric.update(real, real=True)
+    fid_metric.update(gen, real=False)
+    
+    return fid_metric.compute().item()
 
 
 # ─────────────────────────────────────────────
@@ -226,12 +250,15 @@ def evaluate_model(model_name, generate_fn, dataset, device,
         real = real[perm]
 
         ssim_val = batch_ssim(generated, real)
-        results[label_name] = ssim_val
-        print(f"  SSIM ({label_name}): {ssim_val:.4f}")
+        fid_val = batch_fid(generated, real, device)
+        results[f'SSIM_{label_name}'] = ssim_val
+        results[f'FID_{label_name}'] = fid_val
+        print(f"  SSIM ({label_name}): {ssim_val:.4f}  |  FID ({label_name}): {fid_val:.4f}")
 
     # Overall average
-    results['Average'] = np.mean(list(results.values()))
-    print(f"  SSIM (Average): {results['Average']:.4f}")
+    results['SSIM_Average'] = np.mean([results['SSIM_Glasses'], results['SSIM_No Glasses']])
+    results['FID_Average'] = np.mean([results['FID_Glasses'], results['FID_No Glasses']])
+    print(f"  SSIM (Average): {results['SSIM_Average']:.4f}  |  FID (Average): {results['FID_Average']:.4f}")
 
     return results
 
@@ -315,28 +342,34 @@ if __name__ == '__main__':
 
     # ── Print summary table ──────────────────────────────────
     if all_results:
-        print(f"\n{'═' * 55}")
-        print(f"  SSIM Comparison Summary")
-        print(f"{'═' * 55}")
-        print(f"  {'Model':<12} {'Glasses':>10} {'No Glasses':>12} {'Average':>10}")
-        print(f"  {'─' * 48}")
+        print(f"\n{'═' * 95}")
+        print(f"  SSIM & FID Comparison Summary")
+        print(f"{'═' * 95}")
+        print(f"  {'Model':<12} | {'SSIM (G)':>10} {'SSIM (NG)':>12} {'SSIM (Avg)':>10} | {'FID (G)':>10} {'FID (NG)':>12} {'FID (Avg)':>10}")
+        print(f"  {'─' * 90}")
         for name, res in all_results.items():
-            g  = res.get('Glasses', 0)
-            ng = res.get('No Glasses', 0)
-            avg = res.get('Average', 0)
-            print(f"  {name:<12} {g:>10.4f} {ng:>12.4f} {avg:>10.4f}")
-        print(f"{'═' * 55}")
+            s_g  = res.get('SSIM_Glasses', 0)
+            s_ng = res.get('SSIM_No Glasses', 0)
+            s_avg = res.get('SSIM_Average', 0)
+            f_g  = res.get('FID_Glasses', 0)
+            f_ng = res.get('FID_No Glasses', 0)
+            f_avg = res.get('FID_Average', 0)
+            print(f"  {name:<12} | {s_g:>10.4f} {s_ng:>12.4f} {s_avg:>10.4f} | {f_g:>10.4f} {f_ng:>12.4f} {f_avg:>10.4f}")
+        print(f"{'═' * 95}")
 
         # ── Save results to file ─────────────────────────────
-        with open('ssim_results.txt', 'w') as f:
-            f.write("SSIM Evaluation Results\n")
-            f.write("=" * 55 + "\n")
-            f.write(f"{'Model':<12} {'Glasses':>10} {'No Glasses':>12} {'Average':>10}\n")
-            f.write("-" * 48 + "\n")
+        with open('evaluation_results.txt', 'w') as f:
+            f.write("SSIM & FID Evaluation Results\n")
+            f.write("=" * 95 + "\n")
+            f.write(f"{'Model':<12} | {'SSIM (G)':>10} {'SSIM (NG)':>12} {'SSIM (Avg)':>10} | {'FID (G)':>10} {'FID (NG)':>12} {'FID (Avg)':>10}\n")
+            f.write("-" * 90 + "\n")
             for name, res in all_results.items():
-                g  = res.get('Glasses', 0)
-                ng = res.get('No Glasses', 0)
-                avg = res.get('Average', 0)
-                f.write(f"{name:<12} {g:>10.4f} {ng:>12.4f} {avg:>10.4f}\n")
-            f.write("=" * 55 + "\n")
-        print("\nResults saved to ssim_results.txt")
+                s_g  = res.get('SSIM_Glasses', 0)
+                s_ng = res.get('SSIM_No Glasses', 0)
+                s_avg = res.get('SSIM_Average', 0)
+                f_g  = res.get('FID_Glasses', 0)
+                f_ng = res.get('FID_No Glasses', 0)
+                f_avg = res.get('FID_Average', 0)
+                f.write(f"{name:<12} | {s_g:>10.4f} {s_ng:>12.4f} {s_avg:>10.4f} | {f_g:>10.4f} {f_ng:>12.4f} {f_avg:>10.4f}\n")
+            f.write("=" * 95 + "\n")
+        print("\nResults saved to evaluation_results.txt")
