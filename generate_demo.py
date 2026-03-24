@@ -1,8 +1,7 @@
 """
 Demo Generation Script
 ======================
-Generates face images using trained VAE, GAN (unconditional & conditional),
-and Diffusion model weights.
+Generates face images using trained VAE, GAN, and Diffusion model weights.
 Displays and saves a grid of generated images for each model.
 
 Usage:
@@ -15,8 +14,7 @@ The script will:
 
 Models:
   - CVAE:      Conditional generation (Glasses vs No Glasses)
-  - UC-GAN:    Unconditional face generation
-  - cGAN:      Conditional face generation (Glasses vs No Glasses)
+  - GAN:       Unconditional face generation
   - Diffusion: Conditional generation (Glasses vs No Glasses)
 """
 
@@ -119,50 +117,6 @@ def generate_gan(device, num_images=10, weights_path='gan_unc_generator_best.pth
     return fig
 
 
-# ─────────────────────────────────────────────
-#  Conditional GAN Generation
-# ─────────────────────────────────────────────
-
-def generate_cgan(device, num_per_class=5, weights_path='gan_generator_best.pth'):
-    from gan2 import Generator
-
-    if not os.path.exists(weights_path):
-        print(f"  ⚠ cGAN weights not found at {weights_path}, skipping...")
-        return None
-
-    print(f"  Loading cGAN Generator from {weights_path}...")
-    generator = Generator(latent_dim=128, base_filters=64,
-                          activation='relu', dropout=0.0,
-                          num_classes=2, label_embed_dim=32).to(device)
-    generator.load_state_dict(torch.load(weights_path, map_location=device, weights_only=True))
-    generator.eval()
-
-    with torch.no_grad():
-        z_g = torch.randn(num_per_class, 128, device=device)
-        labels_g = torch.ones(num_per_class, dtype=torch.long, device=device)
-        glasses_imgs = generator(z_g, labels_g)
-
-        z_ng = torch.randn(num_per_class, 128, device=device)
-        labels_ng = torch.zeros(num_per_class, dtype=torch.long, device=device)
-        no_glasses_imgs = generator(z_ng, labels_ng)
-
-    fig, axes = plt.subplots(2, num_per_class, figsize=(3 * num_per_class, 6))
-    for col in range(num_per_class):
-        axes[0, col].imshow(denorm(glasses_imgs[col]))
-        axes[0, col].axis('off')
-        axes[1, col].imshow(denorm(no_glasses_imgs[col]))
-        axes[1, col].axis('off')
-
-    axes[0, 0].set_title('Glasses', fontsize=12, fontweight='bold')
-    axes[1, 0].set_title('No Glasses', fontsize=12, fontweight='bold')
-    fig.suptitle('cGAN — Conditional Face Generation', fontsize=14, fontweight='bold')
-    plt.tight_layout()
-    save_path = os.path.join(OUTPUT_DIR, 'demo_cgan_generated.png')
-    plt.savefig(save_path, dpi=150)
-    print(f"  ✅ Saved to {save_path}")
-    plt.show()
-    return fig
-
 
 # ─────────────────────────────────────────────
 #  Diffusion Generation
@@ -223,22 +177,16 @@ if __name__ == '__main__':
     generate_vae(device)
 
     print("\n" + "=" * 50)
-    print("  2. Unconditional GAN Generation")
+    print("  2. GAN Generation")
     print("=" * 50)
     generate_gan(device)
 
     print("\n" + "=" * 50)
-    print("  3. Conditional GAN Generation")
-    print("=" * 50)
-    generate_cgan(device)
-
-    print("\n" + "=" * 50)
-    print("  4. Diffusion Generation")
+    print("  3. Diffusion Generation")
     print("=" * 50)
     generate_diffusion(device)
 
     print(f"\n🎉 Demo complete! Generated images saved in {OUTPUT_DIR}/")
     print(f"   - {OUTPUT_DIR}/demo_vae_generated.png")
     print(f"   - {OUTPUT_DIR}/demo_gan_generated.png")
-    print(f"   - {OUTPUT_DIR}/demo_cgan_generated.png")
     print(f"   - {OUTPUT_DIR}/demo_diffusion_generated.png")
