@@ -2,7 +2,7 @@
 Unconditional GAN Ablation Study — Automated
 ==============================================
 Trains the GAN with 5 different hyperparameter configs (one change at a time),
-computes SSIM for each, saves generated images, and prints a summary table.
+computes FID for each, saves generated images, and prints a summary table.
 
 Usage:
     python ablation_gan.py

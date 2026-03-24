@@ -2,7 +2,7 @@
 Conditional DDPM Ablation Study — Automated
 =============================================
 Trains the Diffusion model with 5 different hyperparameter configs,
-computes SSIM for each, saves generated images, and prints a summary table.
+computes FID for each, saves generated images, and prints a summary table.
 
 Usage:
     python ablation_diffusion.py
