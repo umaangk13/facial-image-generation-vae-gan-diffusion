@@ -2,7 +2,7 @@
 CVAE Ablation Study — Automated
 ================================
 Trains the CVAE with 5 different hyperparameter configs (one change at a time),
-computes SSIM for each, saves generated images, and prints a summary table.
+computes FID for each, saves generated images, and prints a summary table.
 
 Usage:
     python ablation_vae.py
@@ -97,7 +97,7 @@ def denorm(tensor):
 # ─────────────────────────────────────────────
 
 def run_experiment(config, dataset, eval_dataset, device, output_dir):
-    """Train CVAE with given config, evaluate SSIM, save images."""
+    """Train CVAE with given config, evaluate FID, save images."""
 
     name = config['name']
     print(f"\n{'═' * 60}")

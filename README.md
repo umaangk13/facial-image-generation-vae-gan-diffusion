@@ -81,7 +81,7 @@ python diffusion.py
 ```
 
 ### 2. Running Automated Ablation Studies
-To run the automated experiments, use the ablation scripts. These will systematically alter hyperparameters (like learning rate, latent dim, ResBlock count), train the model, compute the SSIM, and save the results in an `ablation_[model]/` dictionary. 
+To run the automated experiments, use the ablation scripts. These will systematically alter hyperparameters (like learning rate, latent dim, ResBlock count), train the model, compute the FID, and save the results in an `ablation_[model]/` directory. 
 
 *If interrupted, simply re-run the script—it will load existing `result.json` files and skip completed experiments.*
 
