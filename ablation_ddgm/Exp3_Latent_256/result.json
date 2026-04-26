@@ -1,0 +1,13 @@
+{
+  "name": "Exp3: Latent 256",
+  "changed_param": "LATENT_DIM",
+  "changed_value": "256",
+  "best_gen_loss": -6.258832677093613,
+  "final_dem_loss": -0.37381985520138916,
+  "final_gen_loss": -6.246399196212554,
+  "g_params": 7632515,
+  "d_params": 7140416,
+  "fid_glasses": 120.7986068725586,
+  "fid_no_glasses": 76.46183776855469,
+  "fid_average": 98.63022232055664
+}

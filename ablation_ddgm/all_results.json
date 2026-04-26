@@ -1,0 +1,54 @@
+[
+  {
+    "name": "Baseline",
+    "changed_param": "None",
+    "changed_value": "-",
+    "best_gen_loss": -6.415800911996066,
+    "final_dem_loss": -0.33086100437909444,
+    "final_gen_loss": -6.415800911996066,
+    "g_params": 6583939,
+    "d_params": 7140416,
+    "fid_glasses": 121.48222351074219,
+    "fid_no_glasses": 87.5386962890625,
+    "fid_average": 104.51045989990234
+  },
+  {
+    "name": "Exp1: 256 Experts",
+    "changed_param": "NUM_EXPERTS",
+    "changed_value": "256",
+    "best_gen_loss": -7.869844250057055,
+    "final_dem_loss": -0.396134595598673,
+    "final_gen_loss": -7.869844250057055,
+    "g_params": 6583939,
+    "d_params": 5043008,
+    "fid_glasses": 118.19091033935547,
+    "fid_no_glasses": 83.22685241699219,
+    "fid_average": 100.70888137817383
+  },
+  {
+    "name": "Exp2: LR 1e-4",
+    "changed_param": "LR_DGM / LR_DEM",
+    "changed_value": "1e-4",
+    "best_gen_loss": -4.540275703915549,
+    "final_dem_loss": -0.4046722269042983,
+    "final_gen_loss": -4.540275703915549,
+    "g_params": 6583939,
+    "d_params": 7140416,
+    "fid_glasses": 133.4425048828125,
+    "fid_no_glasses": 75.2923812866211,
+    "fid_average": 104.3674430847168
+  },
+  {
+    "name": "Exp3: Latent 256",
+    "changed_param": "LATENT_DIM",
+    "changed_value": "256",
+    "best_gen_loss": -6.258832677093613,
+    "final_dem_loss": -0.37381985520138916,
+    "final_gen_loss": -6.246399196212554,
+    "g_params": 7632515,
+    "d_params": 7140416,
+    "fid_glasses": 120.7986068725586,
+    "fid_no_glasses": 76.46183776855469,
+    "fid_average": 98.63022232055664
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "name": "Exp2: LR 1e-4",
+  "changed_param": "LR_DGM / LR_DEM",
+  "changed_value": "1e-4",
+  "best_gen_loss": -4.540275703915549,
+  "final_dem_loss": -0.4046722269042983,
+  "final_gen_loss": -4.540275703915549,
+  "g_params": 6583939,
+  "d_params": 7140416,
+  "fid_glasses": 133.4425048828125,
+  "fid_no_glasses": 75.2923812866211,
+  "fid_average": 104.3674430847168
+}

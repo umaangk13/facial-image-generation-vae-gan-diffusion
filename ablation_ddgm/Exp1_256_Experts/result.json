@@ -1,0 +1,13 @@
+{
+  "name": "Exp1: 256 Experts",
+  "changed_param": "NUM_EXPERTS",
+  "changed_value": "256",
+  "best_gen_loss": -7.869844250057055,
+  "final_dem_loss": -0.396134595598673,
+  "final_gen_loss": -7.869844250057055,
+  "g_params": 6583939,
+  "d_params": 5043008,
+  "fid_glasses": 118.19091033935547,
+  "fid_no_glasses": 83.22685241699219,
+  "fid_average": 100.70888137817383
+}

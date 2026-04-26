@@ -109,27 +109,44 @@ def batch_ssim(generated, real, batch_size=32):
     return np.mean(ssim_scores)
 
 
-def batch_fid(generated, real, device):
+def batch_fid(generated, real, device, batch_size=50):
     """
     Compute Frechet Inception Distance (FID) between generated 
     and real images using torchmetrics.
     
     Both inputs are (B, C, H, W) in [-1, 1] range.
+    Images are processed in small batches to avoid OOM — InceptionV3
+    internally upscales to 299x299, which explodes memory at large N.
     """
+    import gc
     try:
         from torchmetrics.image.fid import FrechetInceptionDistance
     except ImportError:
         raise ImportError("Please install torchmetrics to use FID: pip install torchmetrics")
-        
-    # Denormalise [-1, 1] → [0, 1] → [0, 255] uint8
-    gen = ((generated * 0.5 + 0.5).clamp(0, 1) * 255).to(torch.uint8)
-    real = ((real * 0.5 + 0.5).clamp(0, 1) * 255).to(torch.uint8)
-    
+
     fid_metric = FrechetInceptionDistance(feature=2048, normalize=False).to(device)
-    fid_metric.update(real, real=True)
-    fid_metric.update(gen, real=False)
-    
-    return fid_metric.compute().item()
+
+    # Feed real images in small batches
+    for i in range(0, real.size(0), batch_size):
+        chunk = ((real[i:i+batch_size] * 0.5 + 0.5).clamp(0, 1) * 255).to(torch.uint8)
+        fid_metric.update(chunk.to(device), real=True)
+        del chunk
+
+    # Feed generated images in small batches
+    for i in range(0, generated.size(0), batch_size):
+        chunk = ((generated[i:i+batch_size] * 0.5 + 0.5).clamp(0, 1) * 255).to(torch.uint8)
+        fid_metric.update(chunk.to(device), real=False)
+        del chunk
+
+    score = fid_metric.compute().item()
+
+    # Cleanup: free InceptionV3 and intermediate state
+    del fid_metric
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+    gc.collect()
+
+    return score
 
 
 # ─────────────────────────────────────────────
@@ -212,6 +229,31 @@ def load_diffusion(checkpoint_path, device):
     return model, generate
 
 
+def load_ddgm(checkpoint_path, device):
+    """Load trained DDGM generator and return (model, generate_fn)."""
+    from gan import Generator
+
+    model = Generator(
+        latent_dim=128,
+        base_filters=64,
+        activation='relu',
+        dropout=0.3,
+    ).to(device)
+
+    model.load_state_dict(
+        torch.load(checkpoint_path, map_location=device, weights_only=True)
+    )
+    model.eval()
+
+    def generate(num_samples, label):
+        # DDGM generator is unconditional — ignores class label
+        with torch.no_grad():
+            z = torch.randn(num_samples, 128, device=device)
+            return model(z)
+
+    return model, generate
+
+
 # ─────────────────────────────────────────────
 #  Evaluation Pipeline
 # ─────────────────────────────────────────────
@@ -272,7 +314,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='SSIM evaluation for Gen AI Assignment 1')
     parser.add_argument('--model', type=str, default='all',
-                        choices=['vae', 'gan', 'diffusion', 'all'],
+                        choices=['vae', 'gan', 'diffusion', 'ddgm', 'all'],
                         help='Which model to evaluate')
     parser.add_argument('--num_samples', type=int, default=100,
                         help='Number of images to generate per class')
@@ -309,11 +351,16 @@ if __name__ == '__main__':
             'checkpoint': 'diffusion_best.pth',
             'name': 'DDPM',
         },
+        'ddgm': {
+            'loader': load_ddgm,
+            'checkpoint': 'ddgm_generator_best.pth',
+            'name': 'DDGM',
+        },
     }
 
     # Determine which models to evaluate
     if args.model == 'all':
-        models_to_eval = ['vae', 'gan', 'diffusion']
+        models_to_eval = ['vae', 'gan', 'diffusion', 'ddgm']
     else:
         models_to_eval = [args.model]
 

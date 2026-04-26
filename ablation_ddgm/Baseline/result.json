@@ -1,0 +1,13 @@
+{
+  "name": "Baseline",
+  "changed_param": "None",
+  "changed_value": "-",
+  "best_gen_loss": -6.415800911996066,
+  "final_dem_loss": -0.33086100437909444,
+  "final_gen_loss": -6.415800911996066,
+  "g_params": 6583939,
+  "d_params": 7140416,
+  "fid_glasses": 121.48222351074219,
+  "fid_no_glasses": 87.5386962890625,
+  "fid_average": 104.51045989990234
+}
