@@ -6,6 +6,8 @@ venv/
 # Data & large files
 images/
 *.pth
+img_align_celeba/
+data/
 
 # Assignment PDF
 Gen AI - Assignment 1.pdf
@@ -20,3 +22,18 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
+# CelebA Annotations
+list_attr_celeba.csv
+list_bbox_celeba.csv
+list_eval_partition.csv
+list_landmarks_align_celeba.csv
+
+# Docs and Papers
+1606.03439v1.pdf
+Gen AI - Assignment 2.pdf
+temp_pdf.txt
+
+# Ignored Outputs
+celeba_samples.png
+ddgm_results/
