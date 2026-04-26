@@ -1,19 +1,20 @@
-# Facial Image Generation: VAE, GAN, and Diffusion
+# Facial Image Generation: VAE, GAN, Diffusion, and DDGM
 
-This repository contains the implementation of three distinct generative models—**Variational Autoencoder (VAE)**, **Generative Adversarial Network (GAN)**, and **Denoising Diffusion Probabilistic Model (DDPM)**—designed to generate 64x64 face images. 
+This repository contains the implementation of four distinct generative models—**Variational Autoencoder (VAE)**, **Generative Adversarial Network (GAN)**, **Denoising Diffusion Probabilistic Model (DDPM)**, and **Deep Directed Generative Model (DDGM)**—designed to generate 64x64 face images. 
 
-The primary objective is to implement these architectures from scratch using PyTorch, perform class-conditional generation (faces with and without glasses), and systematically evaluate their performance using the Fréchet Inception Distance (FID) and automated ablation studies.
+The primary objective is to implement these architectures from scratch using PyTorch, perform class-conditional (and unconditional) generation, and systematically evaluate their performance using the Fréchet Inception Distance (FID) and automated ablation studies.
 
-Developed for **CS F437: Generative AI** (Assignment 1).
+Developed for **CS F437: Generative AI** (Assignments 1 & 2).
 
 ---
 
 ## 🚀 Key Features
 
-*   **Three Core Architectures:**
+*   **Four Core Architectures:**
     *   **Conditional VAE (`vae.py`)**: Uses label embeddings injected into both the encoder and decoder to learn class-specific latent spaces.
     *   **DCGAN (`gan.py` & `gan2.py`)**: Implementations of both Unconditional and Conditional DCGAN architectures.
     *   **DDPM (`diffusion.py`)**: A conditional Denoising Diffusion Probabilistic Model utilizing a custom UNet with sinusoidal timestep embeddings.
+    *   **DDGM (`ddgm.py`)**: A Deep Directed Generative Model utilizing an Energy-Based Model (DEM) instead of a standard discriminator for stable training and probability estimation.
 *   **Modern Architectural Tweaks:** Custom **Residual Blocks** (`x = x + layer(x)`) implemented across the VAE Encoder/Decoder and the GAN Generator/Discriminator to solve vanishing gradients, smooth the loss landscape, and accelerate convergence.
 *   **Automated Ablation Studies:** Dedicated scripts (`ablation_*.py`) that automatically run grid searches over ≥5 hyperparameters per model, save progression images, and output markdown summary tables. Resume-capability built in.
 *   **Automated Evaluation:** Evaluation pipeline utilizing `torch-fidelity` to compute the Fréchet Inception Distance (FID) score (`evaluate.py`, `eval_fid_from_checkpoints.py`) to benchmark the quality and diversity of generated faces against the real dataset.
@@ -23,14 +24,19 @@ Developed for **CS F437: Generative AI** (Assignment 1).
 
 ```text
 ├── dataset.py                # Albumentations data pipeline & GlassesDataset definition
+├── celeba_dataset.py         # CelebA dataset wrapper for DDGM scaling
 ├── vae.py                    # CVAE architecture (Encoder, Decoder, Loss)
 ├── gan.py                    # Unconditional DCGAN (Generator, Discriminator, ResBlocks)
 ├── gan2.py                   # Conditional cGAN architecture
 ├── diffusion.py              # DDPM noise schedule, training loop, and UNet
-├── evaluate.py               # FID score calculation and model benchmarking
+├── ddgm.py                   # DDGM Deep Energy Model (DEM) and Generator
+├── ddgm_celeba.py            # Scaled DDGM training script for the CelebA dataset
+├── evaluate.py               # Memory-safe FID/SSIM calculation and model benchmarking
+├── eval_celeba_fid.py        # Standalone CelebA FID evaluation script
 ├── ablation_vae.py           # Automated ablation runner for VAE
 ├── ablation_gan.py           # Automated ablation runner for GAN
 ├── ablation_diffusion.py     # Automated ablation runner for Diffusion
+├── ablation_ddgm.py          # Automated ablation runner for DDGM
 ├── eval_fid_from_checkpoints.py # Batch offline FID calculator for ablation checkpoints
 ├── generate_demo.py          # Unified image generation demo script for all models
 ├── describe_models.py        # CLI tool to print rich layer-by-layer parameter summaries
@@ -59,14 +65,14 @@ Developed for **CS F437: Generative AI** (Assignment 1).
    pip install -r requirements.txt
    ```
 
-3. Download the dataset from Kaggle and ensure the generated images are placed in the `images/` directory at the root of the project. To download via Python:
-   ```python
-   import kagglehub
-   # Download latest version
-   path = kagglehub.dataset_download("jeffheaton/glasses-or-no-glasses")
-   print("Path to dataset files:", path)
-   ```
-   *Make sure you also place `final_train.csv` in the root of the project.*
+3. **Dataset Setup:**
+   * **Assignment 1 (5K Faces):** Download the dataset from Kaggle and ensure the generated images are placed in the `images/` directory at the root of the project, along with `final_train.csv`. To download via Python:
+     ```python
+     import kagglehub
+     path = kagglehub.dataset_download("jeffheaton/glasses-or-no-glasses")
+     print("Path to dataset files:", path)
+     ```
+   * **Assignment 2 (CelebA 200K Faces):** The DDGM requires CelebA for scaling. Download the aligned CelebA dataset and place it in the `data/` directory, or run `python celeba_dataset.py --download` to fetch it via `torchvision`.
 ---
 
 ## 🏃‍♂️ Running the Code
@@ -78,6 +84,8 @@ You can run any of the core model files directly to start a standard training ru
 python vae.py
 python gan.py
 python diffusion.py
+python ddgm.py
+python ddgm_celeba.py  # DDGM training on CelebA
 ```
 
 ### 2. Running Automated Ablation Studies
@@ -89,6 +97,7 @@ To run the automated experiments, use the ablation scripts. These will systemati
 python ablation_vae.py
 python ablation_gan.py
 python ablation_diffusion.py
+python ablation_ddgm.py
 ```
 
 ### 3. Running the Generation Demo (Inference)
